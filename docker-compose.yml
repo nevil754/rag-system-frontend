@@ -1,27 +1,25 @@
+name: ${COMPOSE_PROJECT_NAME}  #nome prj! (se non lo specifici qua allora si setta come nome folder che contiene questo docker-compose file) quindi ora e.g.i nomi dei containers saranno <project_name>-<service_name>-<index>
+
 services:
-  ragsystemfrontend-ui:
+
+  ragsystem-frontend:
     build:
       context: .
       dockerfile: RagSystemFrontend.UI/Dockerfile
-    ports:
-      - "8080:8080"
+    image: ragsystem-frontend:latest   #x dare nome custom alla build che crei
+    restart: unless-stopped
+    # ports:
+    #   - "8080:8080"  non serve esporre questo container a nessuno, hai gia UI here
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      # URL del backend FastAPI (vedi README2.md/README3.md), gira nel suo docker-compose
-      # separato. ATTENZIONE: "localhost" qui dentro è il container stesso, NON l'host —
-      # con "http://localhost:8000" il frontend non riesce mai a contattare un backend
-      # esposto sulla macchina host (connection refused), anche se sull'host "curl
-      # localhost:8000" funziona. Due opzioni valide:
-      #  1) backend esposto sull'host (bare-metal o suo docker-compose con "ports: 8000:8000"):
-      #     usa host.docker.internal, che Docker Desktop (Windows/Mac) risolve sempre
-      #     all'host — valore di default qui sotto.
-      #  2) backend collegato alla stessa rete Docker di questo servizio (stesso compose o
-      #     "networks" esterna condivisa): usa il nome del servizio/container, es.
-      #     http://fastapi:8000, e NON serve host.docker.internal.
-      - BackendApi__BaseUrl=http://host.docker.internal:8000
-    extra_hosts:
-      # Necessario su Docker Desktop Linux-container-mode e su Docker Engine nativo (Linux):
-      # su Docker Desktop Windows/Mac host.docker.internal è già risolto automaticamente,
-      # questa entry è ridondante ma innocua e rende la config portabile anche su Linux puro.
-      - "host.docker.internal:host-gateway"
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}   #con 'Development' renderizzi anche logs di stack tracing
+      - ASPNETCORE_HTTP_PORTS=8080     #porta interna del container, okey
+      - BackendApi__BaseUrl=http://fastapi:8000    #nome del service del backend che utilizzi
+
+    networks:
+      - rag-network
+
+networks:
+  rag-network:
+    name: ${DOCKER_NETWORK}   #deve essere esattamente identica a quella del backend, e.g.'rag-dev-network', il ragfrontend deve entrare nella rete del backend! in totale 1 sola rete!
+    external: true 
+
