@@ -8,8 +8,8 @@ services:
       dockerfile: RagSystemFrontend.UI/Dockerfile
     image: ragsystem-frontend:latest   #x dare nome custom alla build che crei
     restart: unless-stopped
-    # ports:
-    #   - "8080:8080"  non serve esporre questo container a nessuno, hai gia UI here
+    ports:
+      - "8090:8080"   #host 8090  ->  container 8080 (dove ascolta Kestrel)(anche chainlit su backend usa quella porta docker (8080), ok nessun problema x docker intanto sono distinte/docker capisce che sono differenti). sul browser http://192.168.113.52:8090
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}   #con 'Development' renderizzi anche logs di stack tracing
       - ASPNETCORE_HTTP_PORTS=8080     #porta interna del container, okey
