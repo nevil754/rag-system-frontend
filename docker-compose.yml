@@ -23,3 +23,4 @@ networks:
     name: ${DOCKER_NETWORK}   #deve essere esattamente identica a quella del backend, e.g.'rag-dev-network', il ragfrontend deve entrare nella rete del backend! in totale 1 sola rete!
     external: true 
 
+
