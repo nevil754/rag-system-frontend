@@ -1,0 +1,80 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+@if (User.IsTenantAuthenticated())
+{
+    <div class="mb-4">
+        <h1 class="display-6">Bentornato@(string.IsNullOrEmpty(User.Email()) ? "" : $", {User.Email()}")</h1>
+        <p class="lead">
+            Spazio attivo: <span class="badge text-bg-secondary">@User.TenantSlug()</span>
+            (ruolo <strong>@User.TenantRole()</strong>)
+        </p>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Chat RAG</h5>
+                    <p class="card-text">Fai domande in linguaggio naturale sui documenti caricati.</p>
+                    <a class="btn btn-primary" asp-controller="Chat" asp-action="Index">Apri la chat</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Documenti</h5>
+                    <p class="card-text">Carica nuovi documenti e monitora lo stato di ingestione.</p>
+                    <a class="btn btn-outline-primary" asp-controller="Documents" asp-action="Index">Gestisci documenti</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Collezioni</h5>
+                    <p class="card-text">Raggruppa i documenti in collezioni logiche.</p>
+                    <a class="btn btn-outline-primary" asp-controller="Collections" asp-action="Index">Gestisci collezioni</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Job di ingestione</h5>
+                    <p class="card-text">Controlla l'avanzamento dell'elaborazione dei documenti.</p>
+                    <a class="btn btn-outline-primary" asp-controller="Jobs" asp-action="Index">Vedi i job</a>
+                </div>
+            </div>
+        </div>
+        @if (User.IsTenantAdmin())
+        {
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Utenti</h5>
+                        <p class="card-text">Gestisci gli utenti di questo Space (solo admin).</p>
+                        <a class="btn btn-outline-primary" asp-controller="Users" asp-action="Index">Gestisci utenti</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else if (User.IsPlatformAuthenticated())
+{
+    <div class="mb-4">
+        <h1 class="display-6">Bentornato@(string.IsNullOrEmpty(User.Email()) ? "" : $", {User.Email()}")</h1>
+        <p class="lead">Sei autenticato a livello platform. Seleziona uno Space per iniziare a lavorare.</p>
+    </div>
+    <a class="btn btn-primary" asp-controller="Spaces" asp-action="Index">Vai ai tuoi Space</a>
+}
+else
+{
+    <div class="text-center py-5">
+        <h1 class="display-4">RAG Enterprise Compet-e Legal</h1>
+        <p class="lead">Interroga in linguaggio naturale i tuoi documenti aziendali/legali.</p>
+        <a class="btn btn-primary btn-lg mt-3" asp-controller="Account" asp-action="Login">Accedi</a>
+    </div>
+}

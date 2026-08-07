@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="RagSystemFrontend.Core/RagSystemFrontend.Core.csproj" Id="d877bd3a-0aff-48ad-b54e-8af7a0374511" />
+    <Project Path="RagSystemFrontend.UI/RagSystemFrontend.UI.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>

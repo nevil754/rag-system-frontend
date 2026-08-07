@@ -1,0 +1,83 @@
+@model List<SpaceDto>
+@{
+    ViewData["Title"] = "I miei Space";
+}
+
+<h1 class="mb-4">I miei Space</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Crea un nuovo Space</h5>
+        <form asp-controller="Spaces" asp-action="Create" method="post" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <label class="form-label" for="createName">Nome</label>
+                <input type="text" id="createName" name="Name" class="form-control" placeholder="Es. Il Mio Spazio" required maxlength="255" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Crea</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.Count == 0)
+{
+    <p class="text-muted">Non possiedi ancora nessuno Space. Creane uno per iniziare.</p>
+}
+else
+{
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Slug</th>
+                <th>Piano</th>
+                <th>Stato</th>
+                <th>Creato il</th>
+                <th class="text-end">Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var space in Model)
+            {
+                <tr>
+                    <td>
+                        <form asp-controller="Spaces" asp-action="Rename" method="post" class="d-flex gap-2">
+                            <input type="hidden" name="Id" value="@space.Id" />
+                            <input type="text" name="Name" value="@space.DisplayName" class="form-control form-control-sm" required maxlength="255" />
+                            <button type="submit" class="btn btn-sm btn-outline-secondary text-nowrap">Rinomina</button>
+                        </form>
+                    </td>
+                    <td><code>@space.Slug</code></td>
+                    <td>@space.Plan</td>
+                    <td>
+                        @if (space.IsActive)
+                        {
+                            <span class="badge text-bg-success">attivo</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-secondary">disabilitato</span>
+                        }
+                    </td>
+                    <td>@space.CreatedAt.LocalDateTime.ToString("g")</td>
+                    <td class="text-end">
+                        <div class="d-flex gap-2 justify-content-end">
+                            @if (space.IsActive)
+                            {
+                                <form asp-controller="Spaces" asp-action="Select" method="post">
+                                    <input type="hidden" name="id" value="@space.Id" />
+                                    <button type="submit" class="btn btn-sm btn-primary">Seleziona</button>
+                                </form>
+                                <form asp-controller="Spaces" asp-action="Disable" method="post" onsubmit="return confirm('Disabilitare questo Space?');">
+                                    <input type="hidden" name="id" value="@space.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Disabilita</button>
+                                </form>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

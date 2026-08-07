@@ -1,0 +1,24 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Errore";
+}
+
+<h1 class="text-danger">Si è verificato un errore</h1>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <p class="lead">@Model.Message</p>
+}
+else
+{
+    <p class="lead">Si è verificato un problema durante l'elaborazione della richiesta.</p>
+}
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<a class="btn btn-primary" asp-controller="Home" asp-action="Index">Torna alla home</a>

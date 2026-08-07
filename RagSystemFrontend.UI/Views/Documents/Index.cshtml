@@ -1,0 +1,130 @@
+@model DocumentsIndexViewModel
+@{
+    ViewData["Title"] = "Documenti";
+    var statuses = new[] { "pending", "processing", "ready", "error", "deleted" };
+}
+
+<h1 class="mb-4">Documenti</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Carica un nuovo documento</h5>
+        <p class="text-muted small">Formati supportati: pdf, docx, xlsx, pptx, txt, md. Dimensione massima 100MB.</p>
+        <form asp-controller="Documents" asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <label class="form-label" for="uploadFile">File</label>
+                <input type="file" id="uploadFile" name="File" class="form-control" required accept=".pdf,.docx,.xlsx,.pptx,.txt,.md" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="uploadCollection">Collezione (opzionale)</label>
+                <select id="uploadCollection" name="CollectionId" class="form-select">
+                    <option value="">Nessuna</option>
+                    @foreach (var collection in Model.Collections)
+                    {
+                        <option value="@collection.Id">@collection.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Carica</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<form asp-controller="Documents" asp-action="Index" method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-auto">
+        <label class="form-label" for="filterCollection">Collezione</label>
+        <select id="filterCollection" name="collectionId" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">Tutte</option>
+            @foreach (var collection in Model.Collections)
+            {
+                <option value="@collection.Id" selected="@(collection.Id == Model.CollectionId)">@collection.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label" for="filterStatus">Stato</label>
+        <select id="filterStatus" name="statusFilter" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">Tutti</option>
+            @foreach (var status in statuses)
+            {
+                <option value="@status" selected="@(status == Model.StatusFilter)">@status</option>
+            }
+        </select>
+    </div>
+</form>
+
+@if (Model.Documents.Items.Count == 0)
+{
+    <p class="text-muted">Nessun documento trovato.</p>
+}
+else
+{
+    <table class="table table-hover align-middle" id="documentsTable">
+        <thead>
+            <tr>
+                <th>Nome file</th>
+                <th>Stato</th>
+                <th>Chunk</th>
+                <th>Pagine</th>
+                <th>Dimensione</th>
+                <th>Caricato il</th>
+                @if (User.IsTenantAdmin())
+                {
+                    <th class="text-end">Azioni</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var doc in Model.Documents.Items)
+            {
+                <tr data-document-id="@doc.Id" data-status="@doc.Status">
+                    <td>@doc.OriginalName</td>
+                    <td>
+                        <span class="badge status-badge @(doc.Status switch
+                                                            {
+                                                                "ready" => "text-bg-success",
+                                                                "error" => "text-bg-danger",
+                                                                "deleted" => "text-bg-secondary",
+                                                                _ => "text-bg-warning",
+                                                            })">@doc.Status</span>
+                    </td>
+                    <td class="chunk-count">@(doc.ChunkCount?.ToString() ?? "-")</td>
+                    <td class="page-count">@(doc.PageCount?.ToString() ?? "-")</td>
+                    <td>@((doc.FileSize / 1024.0).ToString("N0")) KB</td>
+                    <td>@doc.CreatedAt.LocalDateTime.ToString("g")</td>
+                    @if (User.IsTenantAdmin())
+                    {
+                        <td class="text-end">
+                            <form asp-controller="Documents" asp-action="Delete" method="post" onsubmit="return confirm('Eliminare questo documento?');">
+                                <input type="hidden" name="id" value="@doc.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Elimina</button>
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                <a class="page-link" asp-controller="Documents" asp-action="Index"
+                   asp-route-page="@(Model.Page - 1)" asp-route-pageSize="@Model.PageSize"
+                   asp-route-collectionId="@Model.CollectionId" asp-route-statusFilter="@Model.StatusFilter">Precedente</a>
+            </li>
+            <li class="page-item disabled"><span class="page-link">Pagina @Model.Page</span></li>
+            <li class="page-item @(!Model.Documents.HasMore ? "disabled" : "")">
+                <a class="page-link" asp-controller="Documents" asp-action="Index"
+                   asp-route-page="@(Model.Page + 1)" asp-route-pageSize="@Model.PageSize"
+                   asp-route-collectionId="@Model.CollectionId" asp-route-statusFilter="@Model.StatusFilter">Successiva</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+@section Scripts {
+    <script src="~/js/documents.js" asp-append-version="true"></script>
+}

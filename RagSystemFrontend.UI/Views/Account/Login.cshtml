@@ -1,0 +1,88 @@
+@model AccountLoginViewModel
+@{
+    ViewData["Title"] = "Accedi";
+    var platformHasErrors = ViewData.ModelState.Keys.Any(k => k.StartsWith("Platform.", StringComparison.Ordinal));
+    var tenantActive = !platformHasErrors;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <h1 class="mb-4">Accedi</h1>
+
+        @if (Model.Expired)
+        {
+            <div class="alert alert-warning">La sessione è scaduta. Effettua nuovamente l'accesso.</div>
+        }
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <ul class="nav nav-tabs" id="loginTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link @(tenantActive ? "active" : "")" id="tenant-tab" data-bs-toggle="tab" data-bs-target="#tenant-pane" type="button" role="tab">
+                    Accesso tenant
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link @(tenantActive ? "" : "active")" id="platform-tab" data-bs-toggle="tab" data-bs-target="#platform-pane" type="button" role="tab">
+                    Accesso platform (Spaces)
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content border border-top-0 p-4">
+            <div class="tab-pane fade @(tenantActive ? "show active" : "")" id="tenant-pane" role="tabpanel">
+                <p class="text-muted">
+                    Accesso classico: devi già conoscere lo slug del tenant a cui appartieni.
+                </p>
+                <form asp-controller="Account" asp-action="LoginTenant" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Tenant.Email" class="form-label"></label>
+                        <input asp-for="Tenant.Email" class="form-control" autocomplete="username" />
+                        <span asp-validation-for="Tenant.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Tenant.Password" class="form-label"></label>
+                        <input asp-for="Tenant.Password" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="Tenant.Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Tenant.TenantSlug" class="form-label"></label>
+                        <input asp-for="Tenant.TenantSlug" class="form-control" placeholder="es. demo-corp" />
+                        <span asp-validation-for="Tenant.TenantSlug" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Accedi</button>
+                </form>
+            </div>
+            <div class="tab-pane fade @(tenantActive ? "" : "show active")" id="platform-pane" role="tabpanel">
+                <p class="text-muted">
+                    Account platform: gestisci più Space (tenant) in self-service senza conoscerne lo slug.
+                </p>
+                <form asp-controller="Account" asp-action="LoginPlatform" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Platform.Email" class="form-label"></label>
+                        <input asp-for="Platform.Email" class="form-control" autocomplete="username" />
+                        <span asp-validation-for="Platform.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Platform.Password" class="form-label"></label>
+                        <input asp-for="Platform.Password" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="Platform.Password" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Accedi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

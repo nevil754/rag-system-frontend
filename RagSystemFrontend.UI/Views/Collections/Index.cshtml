@@ -1,0 +1,77 @@
+@model CollectionsIndexViewModel
+@{
+    ViewData["Title"] = "Collezioni";
+}
+
+<h1 class="mb-4">Collezioni</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Crea una nuova collezione</h5>
+        <form asp-controller="Collections" asp-action="Create" method="post" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <label class="form-label" for="createName">Nome</label>
+                <input type="text" id="createName" name="Name" class="form-control" required maxlength="255" placeholder="Es. Contratti 2024" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="createDescription">Descrizione (opzionale)</label>
+                <input type="text" id="createDescription" name="Description" class="form-control" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Crea</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.Collections.Items.Count == 0)
+{
+    <p class="text-muted">Nessuna collezione presente.</p>
+}
+else
+{
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrizione</th>
+                <th>Creata il</th>
+                @if (User.IsTenantAdmin())
+                {
+                    <th class="text-end">Azioni</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var collection in Model.Collections.Items)
+            {
+                <tr>
+                    <td>@collection.Name</td>
+                    <td>@collection.Description</td>
+                    <td>@collection.CreatedAt.LocalDateTime.ToString("g")</td>
+                    @if (User.IsTenantAdmin())
+                    {
+                        <td class="text-end">
+                            <form asp-controller="Collections" asp-action="Delete" method="post" onsubmit="return confirm('Eliminare questa collezione? I documenti già assegnati non verranno toccati.');">
+                                <input type="hidden" name="id" value="@collection.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Elimina</button>
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                <a class="page-link" asp-controller="Collections" asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-pageSize="@Model.PageSize">Precedente</a>
+            </li>
+            <li class="page-item disabled"><span class="page-link">Pagina @Model.Page</span></li>
+            <li class="page-item @(!Model.Collections.HasMore ? "disabled" : "")">
+                <a class="page-link" asp-controller="Collections" asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-pageSize="@Model.PageSize">Successiva</a>
+            </li>
+        </ul>
+    </nav>
+}

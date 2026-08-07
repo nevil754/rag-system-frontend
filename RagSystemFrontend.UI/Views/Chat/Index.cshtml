@@ -1,0 +1,39 @@
+@model ChatIndexViewModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@{
+    ViewData["Title"] = "Chat";
+    var tokens = Antiforgery.GetAndStoreTokens(Context);
+}
+
+<meta name="csrf-token" content="@tokens.RequestToken" />
+
+<h1 class="mb-3">Chat RAG</h1>
+
+<div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+    <div>
+        <label for="collectionSelect" class="form-label mb-0 me-2">Collezione</label>
+        <select id="collectionSelect" class="form-select form-select-sm d-inline-block w-auto">
+            <option value="">Tutti i documenti</option>
+            @foreach (var collection in Model.Collections)
+            {
+                <option value="@collection.Id">@collection.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="streamingToggle">
+        <label class="form-check-label" for="streamingToggle">Streaming (senza feedback)</label>
+    </div>
+    <button type="button" id="newConversationBtn" class="btn btn-sm btn-outline-secondary ms-auto">Nuova conversazione</button>
+</div>
+
+<div id="chatMessages" class="border rounded p-3 mb-3" style="height: 55vh; overflow-y: auto; background: var(--bs-tertiary-bg, #f8f9fa);"></div>
+
+<form id="chatForm" class="d-flex gap-2">
+    <textarea id="questionInput" class="form-control" rows="2" placeholder="Scrivi una domanda sui tuoi documenti..." required maxlength="10000"></textarea>
+    <button type="submit" class="btn btn-primary align-self-end" id="sendBtn">Invia</button>
+</form>
+
+@section Scripts {
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Accesso negato";
+}
+
+<div class="text-center py-5">
+    <h1 class="text-danger">Accesso negato</h1>
+    <p class="lead">
+        La gestione tenant è riservata agli account platform con permessi di superadmin.
+    </p>
+    <p class="text-muted">
+        L'account <strong>@User.Email()</strong> non ha questo privilegio. Se ti serve provisionare
+        un nuovo tenant, puoi comunque creare un tuo Space self-service.
+    </p>
+    <a class="btn btn-primary" asp-controller="Spaces" asp-action="Index">Vai ai miei Space</a>
+</div>

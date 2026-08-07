@@ -1,0 +1,100 @@
+@model List<TenantDto>
+@{
+    ViewData["Title"] = "Gestione tenant";
+}
+
+<h1 class="mb-4">Gestione tenant (superadmin)</h1>
+<p class="text-muted">
+    Provisioning "senza owner", in gran parte ridondante con gli Space self-service: utile per
+    creare tenant da gestire indipendentemente da un account platform specifico.
+</p>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Crea un nuovo tenant</h5>
+        <form asp-controller="AdminTenants" asp-action="Create" method="post" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <label class="form-label" for="createSlug">Slug</label>
+                <input type="text" id="createSlug" name="Slug" class="form-control" required pattern="^[a-z0-9-]+$" placeholder="acme-corp" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="createDisplayName">Nome visualizzato</label>
+                <input type="text" id="createDisplayName" name="DisplayName" class="form-control" required placeholder="Acme Corp" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="createPlan">Piano</label>
+                <select id="createPlan" name="Plan" class="form-select">
+                    <option value="starter" selected>starter</option>
+                    <option value="pro">pro</option>
+                    <option value="enterprise">enterprise</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="createAdminEmail">Email admin (opzionale)</label>
+                <input type="text" id="createAdminEmail" name="AdminEmail" class="form-control" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="createAdminPassword">Password admin (opzionale)</label>
+                <input type="password" id="createAdminPassword" name="AdminPassword" class="form-control" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Crea</button>
+            </div>
+        </form>
+        <p class="text-muted small mt-2 mb-0">
+            Nota: a differenza di <code>POST /users</code>, qui il backend non valida il formato
+            dell'email né una lunghezza minima della password — se li ometti, il tenant viene
+            creato senza utente admin (andrà aggiunto separatamente).
+        </p>
+    </div>
+</div>
+
+@if (Model.Count == 0)
+{
+    <p class="text-muted">Nessun tenant presente.</p>
+}
+else
+{
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Slug</th>
+                <th>Nome</th>
+                <th>Piano</th>
+                <th>Stato</th>
+                <th>Creato il</th>
+                <th class="text-end">Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tenant in Model)
+            {
+                <tr>
+                    <td><code>@tenant.Slug</code></td>
+                    <td>@tenant.DisplayName</td>
+                    <td>@tenant.Plan</td>
+                    <td>
+                        @if (tenant.IsActive)
+                        {
+                            <span class="badge text-bg-success">attivo</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-secondary">disabilitato</span>
+                        }
+                    </td>
+                    <td>@tenant.CreatedAt.LocalDateTime.ToString("g")</td>
+                    <td class="text-end">
+                        @if (tenant.IsActive)
+                        {
+                            <form asp-controller="AdminTenants" asp-action="Disable" method="post" onsubmit="return confirm('Disabilitare questo tenant?');">
+                                <input type="hidden" name="slug" value="@tenant.Slug" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Disabilita</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
