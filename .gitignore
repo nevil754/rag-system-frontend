@@ -3,9 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-CLAUDE*
 README2*
 README3*
+README4.md
+README5.md
 
 # User-specific files
 *.rsuser
@@ -50,6 +51,11 @@ bld/
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
+
+CLAUDE*
+CLAUDE.md
+CLAUDE2.md
+.claude/*
 
 # Build results on 'Bin' directories
 **/[Bb]in/*

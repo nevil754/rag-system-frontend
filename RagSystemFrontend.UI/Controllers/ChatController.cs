@@ -19,6 +19,11 @@ public class ChatController(
     public async Task<IActionResult> Index()
     {
         var collectionsResult = await collectionsApiClient.GetCollectionsAsync(1, 100);
+        if (!collectionsResult.Success && collectionsResult.IsUnauthorized)
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account", new { expired = true });
+        }
         return View(new ChatIndexViewModel
         {
             Collections = collectionsResult.Success ? collectionsResult.Data?.Items ?? [] : [],
@@ -58,6 +63,10 @@ public class ChatController(
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Feedback([FromBody] ChatFeedbackViewModel model, CancellationToken ct)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new { error = "Feedback non valido." });
+        }
         var result = await chatApiClient.SendFeedbackAsync(new ChatFeedbackRequest
         {
             MessageId = model.MessageId,
@@ -67,6 +76,12 @@ public class ChatController(
 
         if (!result.Success || result.Data is null)
         {
+            if (result.IsUnauthorized)
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return Unauthorized(new { error = result.ErrorMessage, unauthorized = true });
+            }
+
             return StatusCode(result.StatusCode == 0 ? 502 : result.StatusCode, new { error = result.ErrorMessage });
         }
         return Json(result.Data);

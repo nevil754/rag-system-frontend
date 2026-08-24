@@ -21,7 +21,8 @@ public static class ApiErrorParser
             using var doc = JsonDocument.Parse(content);
             var root = doc.RootElement;
 
-            if (root.TryGetProperty("error", out var errorProp) && root.TryGetProperty("detail", out var rlDetail))
+            if (root.TryGetProperty("error", out var errorProp) && root.TryGetProperty("detail", out var rlDetail)
+                && errorProp.ValueKind == JsonValueKind.String && rlDetail.ValueKind == JsonValueKind.String)
             {
                 int? retryAfter = root.TryGetProperty("retry_after", out var ra) && ra.TryGetInt32(out var raVal)
                     ? raVal
@@ -42,7 +43,7 @@ public static class ApiErrorParser
                     var messages = new List<string>();
                     foreach (var item in detailProp.EnumerateArray())
                     {
-                        if (item.TryGetProperty("msg", out var msg))
+                        if (item.TryGetProperty("msg", out var msg) && msg.ValueKind == JsonValueKind.String)
                         {
                             var loc = item.TryGetProperty("loc", out var locProp)
                                 ? string.Join(".", locProp.EnumerateArray().Select(l => l.ToString()))
@@ -54,9 +55,10 @@ public static class ApiErrorParser
                 }
             }
         }
-        catch (JsonException)
+        catch (Exception)
         {
-            // corpo non-JSON (es. errore HTML/testo grezzo di un proxy) - fallback sotto
+            // corpo JSON con forma inattesa, o non-JSON (es. errore HTML/testo grezzo di un proxy) - fallback sotto.
+            // Questo parser non deve mai propagare eccezioni: è pensato per degradare sempre a un messaggio generico.
         }
 
         return (DefaultMessageFor(statusCode), null);

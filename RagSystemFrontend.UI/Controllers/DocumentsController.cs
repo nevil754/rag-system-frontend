@@ -29,6 +29,10 @@ public class DocumentsController(
         }
 
         var collectionsResult = await collectionsTask;
+        if (!collectionsResult.Success && collectionsResult.IsUnauthorized)
+        {
+            return await HandleFailureAsync(collectionsResult, nameof(Index), "Home");
+        }
 
         return View(new DocumentsIndexViewModel
         {

@@ -17,7 +17,7 @@ public abstract class BaseController : Controller
         }
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         TempData["Error"] = "Sessione scaduta o non valida. Effettua nuovamente l'accesso.";
-        return RedirectToAction("Login", "Account");
+        return RedirectToAction("Login", "Account", new { expired = true });
     }
 
 

@@ -1,4 +1,22 @@
 (() => {
+    // Limite mostrato all'utente in Documents/Index.cshtml; il backend rifiuta comunque
+    // oltre questa soglia, ma qui evitiamo di far partire un upload di minuti per poi fallire.
+    const maxUploadBytes = 100 * 1024 * 1024;
+    const uploadFileInput = document.getElementById('uploadFile');
+    const uploadForm = uploadFileInput?.form;
+
+    if (uploadForm && uploadFileInput) {
+        uploadForm.addEventListener('submit', (e) => {
+            const file = uploadFileInput.files && uploadFileInput.files[0];
+            if (file && file.size > maxUploadBytes) {
+                e.preventDefault();
+                alert(`Il file selezionato (${(file.size / (1024 * 1024)).toFixed(1)}MB) supera la dimensione massima di 100MB.`);
+            }
+        });
+    }
+})();
+
+(() => {
     const pollableStatuses = ['pending', 'processing'];
     const terminalJobStatuses = { done: 'ready', failed: 'error', cancelled: 'error' };
 
@@ -20,6 +38,10 @@
         const id = row.dataset.documentId;
         try {
             const res = await fetch(`/Documents/Status/${id}`);
+            if (res.status === 401) {
+                window.location.href = '/Account/Login?expired=true';
+                return true;
+            }
             if (!res.ok) return false;
 
             const job = await res.json();
