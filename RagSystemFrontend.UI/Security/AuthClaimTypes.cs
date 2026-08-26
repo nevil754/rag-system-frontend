@@ -9,4 +9,5 @@ public static class AuthClaimTypes
 
     public const string PlatformToken = "platform_token";
     public const string PlatformUserId = "platform_user_id";
+    public const string IsSuperAdmin = "is_superadmin";
 }

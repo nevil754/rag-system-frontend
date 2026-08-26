@@ -12,8 +12,8 @@ public class LoginTenantViewModel
     [DataType(DataType.Password)]
     public string Password { get; set; } = "";
 
-    [Required(ErrorMessage = "Lo slug del tenant è obbligatorio.")]
-    [Display(Name = "Tenant (slug)")]
+    [Required(ErrorMessage = "Lo slug dell'ufficio è obbligatorio.")]
+    [Display(Name = "Ufficio (slug)")]
     public string TenantSlug { get; set; } = "";
 }
 

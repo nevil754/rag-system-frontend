@@ -47,7 +47,8 @@ builder.Services
 builder.Services.AddAuthorizationBuilder()   //auth policies
     .AddPolicy("TenantAuth", policy => policy.RequireClaim(AuthClaimTypes.TenantToken))
     .AddPolicy("TenantAdmin", policy => policy.RequireClaim(AuthClaimTypes.TenantToken).RequireRole("admin"))
-    .AddPolicy("PlatformAuth", policy => policy.RequireClaim(AuthClaimTypes.PlatformToken));
+    .AddPolicy("PlatformAuth", policy => policy.RequireClaim(AuthClaimTypes.PlatformToken))
+    .AddPolicy("SuperAdminAuth", policy => policy.RequireClaim(AuthClaimTypes.PlatformToken).RequireClaim(AuthClaimTypes.IsSuperAdmin));
 
 var backendBaseUrl = builder.Configuration["BackendApi:BaseUrl"] ?? "http://localhost:8000";
 var apiBaseUri = new Uri(backendBaseUrl.TrimEnd('/') + "/api/v1/");  //endpoint backendBaseUrl+/api/v1/ per tutti

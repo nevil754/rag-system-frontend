@@ -1,25 +1,29 @@
 @model List<TenantDto>
 @{
-    ViewData["Title"] = "Gestione tenant";
+    ViewData["Title"] = "Gestione uffici";
 }
 
-<h1 class="mb-4">Gestione tenant (superadmin)</h1>
+<h1 class="mb-4">Gestione uffici (superadmin)</h1>
 <p class="text-muted">
-    Provisioning "senza owner", in gran parte ridondante con gli Space self-service: utile per
-    creare tenant da gestire indipendentemente da un account platform specifico.
+    Ogni tenant di questo sistema rappresenta un <strong>ufficio/filiale</strong> dell'azienda,
+    con dati e utenti isolati dagli altri. Questa pagina è il provisioning "d'ufficio", senza
+    legarlo a un account platform specifico — in gran parte ridondante con la creazione
+    self-service da "I miei Space" (dove chi crea l'ufficio ne diventa automaticamente admin):
+    usala solo per uffici che non devono appartenere a un singolo owner, o che richiedono un
+    piano diverso da "starter" fin dalla creazione. Visibile solo ai superadmin di piattaforma.
 </p>
 
 <div class="card mb-4">
     <div class="card-body">
-        <h5 class="card-title">Crea un nuovo tenant</h5>
+        <h5 class="card-title">Crea un nuovo ufficio</h5>
         <form asp-controller="AdminTenants" asp-action="Create" method="post" class="row g-2 align-items-end">
             <div class="col-auto">
-                <label class="form-label" for="createSlug">Slug</label>
-                <input type="text" id="createSlug" name="Slug" class="form-control" required pattern="^[a-z0-9-]+$" placeholder="acme-corp" />
+                <label class="form-label" for="createSlug">Slug (identificativo univoco dell'ufficio)</label>
+                <input type="text" id="createSlug" name="Slug" class="form-control" required pattern="^[a-z0-9-]+$" placeholder="es. filiale-milano" />
             </div>
             <div class="col-auto">
-                <label class="form-label" for="createDisplayName">Nome visualizzato</label>
-                <input type="text" id="createDisplayName" name="DisplayName" class="form-control" required placeholder="Acme Corp" />
+                <label class="form-label" for="createDisplayName">Nome ufficio</label>
+                <input type="text" id="createDisplayName" name="DisplayName" class="form-control" required placeholder="es. Filiale Milano" />
             </div>
             <div class="col-auto">
                 <label class="form-label" for="createPlan">Piano</label>
@@ -51,14 +55,14 @@
 
 @if (Model.Count == 0)
 {
-    <p class="text-muted">Nessun tenant presente.</p>
+    <p class="text-muted">Nessun ufficio presente.</p>
 }
 else
 {
     <table class="table table-hover align-middle">
         <thead>
             <tr>
-                <th>Slug</th>
+                <th>Slug (ufficio)</th>
                 <th>Nome</th>
                 <th>Piano</th>
                 <th>Stato</th>

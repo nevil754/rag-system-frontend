@@ -4,14 +4,20 @@
 }
 
 <h1 class="mb-4">I miei Space</h1>
+<p class="text-muted">
+    Uno <strong>Space</strong> rappresenta un <strong>ufficio/filiale</strong> della tua azienda:
+    ogni Space ha i propri utenti, documenti e conversazioni, isolati dagli altri. Lo
+    <strong>slug</strong> è l'identificativo univoco di quell'ufficio (es. <code>filiale-milano</code>),
+    generato automaticamente dal nome che scegli qui sotto.
+</p>
 
 <div class="card mb-4">
     <div class="card-body">
-        <h5 class="card-title">Crea un nuovo Space</h5>
+        <h5 class="card-title">Crea un nuovo Space (ufficio)</h5>
         <form asp-controller="Spaces" asp-action="Create" method="post" class="row g-2 align-items-end">
             <div class="col-auto">
-                <label class="form-label" for="createName">Nome</label>
-                <input type="text" id="createName" name="Name" class="form-control" placeholder="Es. Il Mio Spazio" required maxlength="255" />
+                <label class="form-label" for="createName">Nome ufficio</label>
+                <input type="text" id="createName" name="Name" class="form-control" placeholder="Es. Filiale Milano" required maxlength="255" />
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary">Crea</button>
@@ -22,15 +28,15 @@
 
 @if (Model.Count == 0)
 {
-    <p class="text-muted">Non possiedi ancora nessuno Space. Creane uno per iniziare.</p>
+    <p class="text-muted">Non possiedi ancora nessuno Space (ufficio). Creane uno per iniziare.</p>
 }
 else
 {
     <table class="table table-hover align-middle">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Slug</th>
+                <th>Nome ufficio</th>
+                <th>Slug (identificativo)</th>
                 <th>Piano</th>
                 <th>Stato</th>
                 <th>Creato il</th>

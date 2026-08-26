@@ -32,13 +32,16 @@
                             }
                             @if (User.IsPlatformAuthenticated())
                             {
-                                <li class="nav-item"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">Cambia Space</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">Cambia Ufficio (Space)</a></li>
                             }
                         }
                         else if (User.IsPlatformAuthenticated())
                         {
-                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">I miei Space</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" asp-controller="AdminTenants" asp-action="Index">Gestione Tenant</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">I miei Space (Uffici)</a></li>
+                            @if (User.IsSuperAdmin())
+                            {
+                                <li class="nav-item"><a class="nav-link text-white" asp-controller="AdminTenants" asp-action="Index">Gestione Uffici (superadmin)</a></li>
+                            }
                         }
                     </ul>
                     <ul class="navbar-nav">

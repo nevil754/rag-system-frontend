@@ -7,7 +7,7 @@ using RagSystemFrontend.UI.Models.ViewModels;
 namespace RagSystemFrontend.UI.Controllers;
 
 
-[Authorize(Policy = "PlatformAuth")]
+[Authorize(Policy = "SuperAdminAuth")]
 public class AdminTenantsController(ITenantsApiClient tenantsApiClient) : BaseController
 {
     public async Task<IActionResult> Index()

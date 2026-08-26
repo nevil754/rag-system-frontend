@@ -41,4 +41,5 @@ public sealed record PlatformTokenResponse
     public int ExpiresIn { get; init; }
     public string PlatformUserId { get; init; } = "";
     public string Email { get; init; } = "";
+    public bool IsSuperAdmin { get; init; }
 }

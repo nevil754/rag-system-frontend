@@ -11,6 +11,9 @@ public static class ClaimsPrincipalExtensions
     public static bool IsPlatformAuthenticated(this ClaimsPrincipal user) =>
         user.HasClaim(c => c.Type == AuthClaimTypes.PlatformToken);
 
+    public static bool IsSuperAdmin(this ClaimsPrincipal user) =>
+        user.IsPlatformAuthenticated() && user.HasClaim(c => c.Type == AuthClaimTypes.IsSuperAdmin);
+
     public static bool IsTenantAdmin(this ClaimsPrincipal user) =>
         user.IsTenantAuthenticated() && user.IsInRole("admin");
 
