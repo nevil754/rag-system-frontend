@@ -22,25 +22,25 @@
                     <ul class="navbar-nav flex-grow-1 d-flex align-items-center justify-content-around">
                         @if (User.IsTenantAuthenticated())
                         {
-                            <li class="nav-item me-1"><a class="nav-link text-white" asp-controller="Chat" asp-action="Index">Chat</a></li>
-                            <li class="nav-item me-1"><a class="nav-link text-white" asp-controller="Documents" asp-action="Index">Documenti</a></li>
-                            <li class="nav-item me-1"><a class="nav-link text-white" asp-controller="Collections" asp-action="Index">Collezioni</a></li>
-                            <li class="nav-item me-1"><a class="nav-link text-white" asp-controller="Jobs" asp-action="Index">Job</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Chat" asp-action="Index">Chat</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Documents" asp-action="Index">Documenti</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Collections" asp-action="Index">Collezioni</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Jobs" asp-action="Index">Job</a></li>
                             @if (User.IsTenantAdmin())
                             {
-                                <li class="nav-item me-1"><a class="nav-link text-white" asp-controller="Users" asp-action="Index">Utenti</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-controller="Users" asp-action="Index">Utenti</a></li>
                             }
                             @if (User.IsPlatformAuthenticated())
                             {
-                                <li class="nav-item me-1"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">Cambia Ufficio (Space)</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">Cambia Ufficio (Space)</a></li>
                             }
                         }
                         else if (User.IsPlatformAuthenticated())
                         {
-                            <li class="nav-item me-1"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">I miei Space (Uffici)</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">I miei Space (Uffici)</a></li>
                             @if (User.IsSuperAdmin())
                             {
-                                <li class="nav-item me-1"><a class="nav-link text-white" asp-controller="AdminTenants" asp-action="Index">Gestione Uffici (superadmin)</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-controller="AdminTenants" asp-action="Index">Gestione Uffici (superadmin)</a></li>
                             }
                         }
                     </ul>
