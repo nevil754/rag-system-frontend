@@ -3,7 +3,6 @@ namespace RagSystemFrontend.Core.DTOs;
 /// <summary>Provisioning "senza owner" riservato ai superadmin platform. POST/GET /tenants.</summary>
 public sealed record CreateTenantRequest
 {
-    public string Slug { get; init; } = "";
     public string DisplayName { get; init; } = "";
     public string Plan { get; init; } = "starter";
     public string? AdminEmail { get; init; }

@@ -36,7 +36,6 @@ public class AdminTenantsController(ITenantsApiClient tenantsApiClient) : BaseCo
         }
         var result = await tenantsApiClient.CreateAsync(new CreateTenantRequest
         {
-            Slug = model.Slug,
             DisplayName = model.DisplayName,
             Plan = model.Plan,
             AdminEmail = string.IsNullOrWhiteSpace(model.AdminEmail) ? null : model.AdminEmail,

@@ -13,12 +13,9 @@
         <h5 class="card-title">Crea un nuovo ufficio</h5>
         <form asp-controller="AdminTenants" asp-action="Create" method="post" class="row g-2 align-items-end">
             <div class="col-auto">
-                <label class="form-label" for="createSlug">Slug (identificativo univoco dell'ufficio)</label>
-                <input type="text" id="createSlug" name="Slug" class="form-control" required pattern="^[a-z0-9-]+$" placeholder="es. filiale-torino" />
-            </div>
-            <div class="col-auto">
                 <label class="form-label" for="createDisplayName">Nome ufficio</label>
-                <input type="text" id="createDisplayName" name="DisplayName" class="form-control" required placeholder="es. Filiale Torino" />
+                <input type="text" id="createDisplayName" name="DisplayName" class="form-control" required maxlength="255" placeholder="es. Filiale Torino" />
+                <div class="form-text">Lo slug (es. <code>filiale-torino</code>) viene generato automaticamente da questo nome.</div>
             </div>
             <div class="col-auto">
                 <label class="form-label" for="createPlan">Piano</label>
@@ -30,20 +27,20 @@
             </div>
             <div class="col-auto">
                 <label class="form-label" for="createAdminEmail">Email admin (opzionale)</label>
-                <input type="text" id="createAdminEmail" name="AdminEmail" class="form-control" />
+                <input type="email" id="createAdminEmail" name="AdminEmail" class="form-control" />
             </div>
             <div class="col-auto">
                 <label class="form-label" for="createAdminPassword">Password admin (opzionale)</label>
-                <input type="password" id="createAdminPassword" name="AdminPassword" class="form-control" />
+                <input type="password" id="createAdminPassword" name="AdminPassword" class="form-control" minlength="12" />
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary">Crea</button>
             </div>
         </form>
         <p class="text-muted small mt-2 mb-0">
-            Nota!!: a differenza di <code>POST /users</code>, qui il backend non valida il formato
-            dell'email né una lunghezza minima della password — se li ometti, il tenant viene
-            creato senza utente admin (andrà aggiunto separatamente).
+            Nota: se ometti email e password admin, il tenant viene creato senza utente admin
+            (andrà aggiunto separatamente). Se le compili, devono rispettare le stesse regole
+            di <code>POST /users</code>: email in formato valido e password di almeno 12 caratteri.
         </p>
     </div>
 </div>
