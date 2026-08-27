@@ -33,7 +33,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link @(tenantActive ? "" : "active")" id="platform-tab" data-bs-toggle="tab" data-bs-target="#platform-pane" type="button" role="tab">
-                    Accesso account azienda (tutti gli uffici)
+                    Accesso SuperAdmin azienda (tutti gli uffici)
                 </button>
             </li>
         </ul>
@@ -64,9 +64,7 @@
             </div>
             <div class="tab-pane fade @(tenantActive ? "" : "show active")" id="platform-pane" role="tabpanel">
                 <p class="text-muted">
-                    Account a livello di azienda (non di singolo ufficio): da qui puoi vedere e
-                    scegliere fra tutti gli uffici (Space) che possiedi, senza doverne ricordare
-                    lo slug — e, se sei superadmin, anche crearne di nuovi per conto di altri.
+                    Accesso SuperAdmin: gestione di tutti gli uffici aziendali.
                 </p>
                 <form asp-controller="Account" asp-action="LoginPlatform" method="post">
                     <div class="mb-3">

@@ -11,6 +11,14 @@ public sealed record SpaceDto
     public DateTimeOffset CreatedAt { get; init; }
 }
 
-public sealed record CreateSpaceRequest(string Name);
+public sealed record CreateSpaceRequest
+{
+    public string Name { get; init; } = "";
+    // Onorati dal backend solo se chi crea è superadmin: piano diverso da "starter" e/o
+    // credenziali admin dedicate (ufficio non legato al proprio account platform).
+    public string Plan { get; init; } = "starter";
+    public string? AdminEmail { get; init; }
+    public string? AdminPassword { get; init; }
+}
 
 public sealed record RenameSpaceRequest(string Name);

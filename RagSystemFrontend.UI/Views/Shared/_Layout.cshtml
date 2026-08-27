@@ -38,10 +38,6 @@
                         else if (User.IsPlatformAuthenticated())
                         {
                             <li class="nav-item"><a class="nav-link text-white" asp-controller="Spaces" asp-action="Index">I miei Space (Uffici)</a></li>
-                            @if (User.IsSuperAdmin())
-                            {
-                                <li class="nav-item"><a class="nav-link text-white" asp-controller="AdminTenants" asp-action="Index">Gestione Uffici (superadmin)</a></li>
-                            }
                         }
                     </ul>
                     <ul class="navbar-nav d-flex flex-wrap align-items-center gap-1">
@@ -85,7 +81,7 @@
             }
             @if (TempData["Success"] is string successMessage)
             {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
                     @successMessage
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi"></button>
                 </div>
@@ -102,6 +98,14 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // la card verde di successo scompare da sola dopo 5s (fade gestito dalla stessa
+        // classe .fade di Bootstrap usata per la chiusura manuale col bottone)
+        const successAlert = document.getElementById('successAlert');
+        if (successAlert) {
+            setTimeout(() => bootstrap.Alert.getOrCreateInstance(successAlert).close(), 5000);
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

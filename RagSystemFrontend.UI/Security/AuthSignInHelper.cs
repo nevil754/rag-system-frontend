@@ -21,7 +21,7 @@ public static class AuthSignInHelper
             new(AuthClaimTypes.PlatformToken, token.AccessToken),   //questo verra quindi usato sempre x fare req http al backend
             new(AuthClaimTypes.PlatformUserId, token.PlatformUserId),
         };
-        if (token.IsSuperAdmin)   //claim aggiunta solo se true, cosi la policy "SuperAdminAuth" (RequireClaim) puo controllarne la sola presenza, come per le altre
+        if (token.IsSuperAdmin)   //claim aggiunta solo se true, cosi User.IsSuperAdmin() (ClaimsPrincipalExtensions) puo controllarne la sola presenza, es. in Spaces/Index.cshtml
         {
             claims.Add(new Claim(AuthClaimTypes.IsSuperAdmin, "true"));
         }

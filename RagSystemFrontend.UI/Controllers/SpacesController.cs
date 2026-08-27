@@ -28,11 +28,17 @@ public class SpacesController(ISpacesApiClient spacesApiClient) : BaseController
     {
         if (!ModelState.IsValid)
         {
-            TempData["Error"] = "Nome Space non valido.";
+            TempData["Error"] = string.Join(" ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             return RedirectToAction(nameof(Index));
         }
 
-        var result = await spacesApiClient.CreateSpaceAsync(new CreateSpaceRequest(model.Name));
+        var result = await spacesApiClient.CreateSpaceAsync(new CreateSpaceRequest
+        {
+            Name = model.Name,
+            Plan = model.Plan,
+            AdminEmail = model.CustomCredentials ? model.AdminEmail : null,
+            AdminPassword = model.CustomCredentials ? model.AdminPassword : null,
+        });
         if (!result.Success)
         {
             return await HandleFailureAsync(result, nameof(Index));
