@@ -14,46 +14,53 @@
 <div class="card mb-4">
     <div class="card-body">
         <h5 class="card-title">Crea un nuovo Space (ufficio)</h5>
-        <form asp-controller="Spaces" asp-action="Create" method="post" class="row g-2 align-items-start">
-            <div class="col-auto">
+        <form asp-controller="Spaces" asp-action="Create" method="post" class="d-flex flex-column  g-2 align-items-start">
+
+            <div class="w-50">
                 <label class="form-label" for="createName">Nome ufficio</label>
                 <input type="text" id="createName" name="Name" class="form-control" placeholder="Es. Filiale Torino" required maxlength="255" />
                 <div class="form-text">Lo slug (es. <code>filiale-torino</code>) viene generato automaticamente da questo nome.</div>
             </div>
             @if (User.IsSuperAdmin())
             {
-                <div class="col-auto">
-                    <label class="form-label" for="createPlan">Piano</label>
-                    <select id="createPlan" name="Plan" class="form-select">
-                        <option value="starter" selected>starter</option>
-                        <option value="pro">pro</option>
-                        <option value="enterprise">enterprise</option>
-                    </select>
+                <div class="row g-2 align-items-start">
+
+                    <div class="col-auto">
+                        <label class="form-label" for="createPlan">Piano</label>
+                        <select id="createPlan" name="Plan" class="form-select">
+                            <option value="starter" selected>starter</option>
+                            <option value="pro">pro</option>
+                            <option value="enterprise">enterprise</option>
+                        </select>
+                    </div>
+
+                    <div class="col-auto align-self-center form-check mt-4">
+                        <input type="checkbox" id="createCustomCredentials" name="CustomCredentials" value="true" class="form-check-input" />
+                        <label class="form-check-label" for="createCustomCredentials">Credenziali admin personalizzate</label>
+                    </div>
+
+                    <div class="col-auto">
+                        <label class="form-label" for="createAdminEmail">Email admin</label>
+                        <input type="email" id="createAdminEmail" name="AdminEmail" class="form-control" disabled />
+                    </div>
+
+                    <div class="col-auto">
+                        <label class="form-label" for="createAdminPassword">Password admin</label>
+                        <input type="password" id="createAdminPassword" name="AdminPassword" class="form-control" minlength="12" disabled />
+                    </div>
+
                 </div>
-                <div class="col-auto align-self-center form-check mt-4">
-                    <input type="checkbox" id="createCustomCredentials" name="CustomCredentials" value="true" class="form-check-input" />
-                    <label class="form-check-label" for="createCustomCredentials">Credenziali admin personalizzate</label>
-                </div>
-                <div class="col-auto">
-                    <label class="form-label" for="createAdminEmail">Email admin</label>
-                    <input type="email" id="createAdminEmail" name="AdminEmail" class="form-control" disabled />
-                </div>
-                <div class="col-auto">
-                    <label class="form-label" for="createAdminPassword">Password admin</label>
-                    <input type="password" id="createAdminPassword" name="AdminPassword" class="form-control" minlength="12" disabled />
-                </div>
+
             }
-            <div class="col-auto align-self-center">
+            <div class="w-full align-self-center">
                 <button type="submit" class="btn btn-primary">Crea</button>
             </div>
+
         </form>
         @if (User.IsSuperAdmin())
         {
             <p class="text-muted small mt-2 mb-0">
-                Senza credenziali personalizzate lo Space viene assegnato al tuo account (come admin
-                riusa le tue stesse credenziali platform). Con le credenziali personalizzate attive,
-                email e password admin sono entrambe obbligatorie (formato email valido, password di
-                almeno 12 caratteri) e lo Space non viene legato al tuo account.
+                Senza credenziali personalizzate, le credenziali dell'admin space saranno le stesse di questo utente superadmin.
             </p>
         }
     </div>
