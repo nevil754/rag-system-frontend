@@ -5,13 +5,14 @@
 
 <h1 class="mb-4">Gestione uffici (superadmin)</h1>
 <p class="text-muted">
-    A differenza dei "I miei Space" (dove chi crea l'ufficio ne diventa automaticamente admin) qua crei <strong>uffici (spaces)</strong> che non devono appartenere a un singolo owner, o che richiedono un piano diverso da "starter" fin dalla creazione. Questa sezione è visibile solo ai SuperAdmin (l'unico che amministra l'intera piattaforma).
+    Questa sezione è visibile solo ai SuperAdmin (l'unico che amministra l'intera piattaforma).<br>
+    Qua puoi creare un <strong>office(uno Space)</strong> e assegnarlo ad un admin target, puoi anche selezionare un plan diverso da 'starter'.
 </p>
 
 <div class="card mb-4">
     <div class="card-body">
         <h5 class="card-title">Crea un nuovo ufficio</h5>
-        <form asp-controller="AdminTenants" asp-action="Create" method="post" class="row g-2 align-items-end">
+        <form asp-controller="AdminTenants" asp-action="Create" method="post" class="row g-2 align-items-start">
             <div class="col-auto">
                 <label class="form-label" for="createDisplayName">Nome ufficio</label>
                 <input type="text" id="createDisplayName" name="DisplayName" class="form-control" required maxlength="255" placeholder="es. Filiale Torino" />
@@ -26,11 +27,11 @@
                 </select>
             </div>
             <div class="col-auto">
-                <label class="form-label" for="createAdminEmail">Email admin (opzionale)</label>
+                <label class="form-label" for="createAdminEmail">Email admin (optional)</label>
                 <input type="email" id="createAdminEmail" name="AdminEmail" class="form-control" />
             </div>
             <div class="col-auto">
-                <label class="form-label" for="createAdminPassword">Password admin (opzionale)</label>
+                <label class="form-label" for="createAdminPassword">Password admin (optional)</label>
                 <input type="password" id="createAdminPassword" name="AdminPassword" class="form-control" minlength="12" />
             </div>
             <div class="col-auto">
@@ -38,9 +39,7 @@
             </div>
         </form>
         <p class="text-muted small mt-2 mb-0">
-            Nota: se ometti email e password admin, il tenant viene creato senza utente admin
-            (andrà aggiunto separatamente). Se le compili, devono rispettare le stesse regole
-            di <code>POST /users</code>: email in formato valido e password di almeno 12 caratteri.
+            Nota: se ometti email e password admin, il tenant viene creato senza utente admin (andrà aggiunto separatamente?TODO).
         </p>
     </div>
 </div>
