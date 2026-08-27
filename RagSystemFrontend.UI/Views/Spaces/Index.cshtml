@@ -7,7 +7,7 @@
 <p class="text-muted">
     Uno <strong>Space</strong> rappresenta un <strong>ufficio/filiale</strong> della tua azienda:
     ogni Space ha i propri utenti, documenti e conversazioni, isolati dagli altri. Lo
-    <strong>slug</strong> è l'identificativo univoco di quell'ufficio (es. <code>filiale-milano</code>),
+    <strong>slug</strong> è l'identificativo univoco di quell'ufficio (es. <code>filiale-torino</code>),
     generato automaticamente dal nome che scegli qui sotto.
 </p>
 
@@ -17,7 +17,7 @@
         <form asp-controller="Spaces" asp-action="Create" method="post" class="row g-2 align-items-end">
             <div class="col-auto">
                 <label class="form-label" for="createName">Nome ufficio</label>
-                <input type="text" id="createName" name="Name" class="form-control" placeholder="Es. Filiale Milano" required maxlength="255" />
+                <input type="text" id="createName" name="Name" class="form-control" placeholder="Es. Filiale Torino" required maxlength="255" />
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary">Crea</button>

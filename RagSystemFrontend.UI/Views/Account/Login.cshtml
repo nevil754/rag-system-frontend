@@ -41,7 +41,7 @@
             <div class="tab-pane fade @(tenantActive ? "show active" : "")" id="tenant-pane" role="tabpanel">
                 <p class="text-muted">
                     Accesso diretto a un singolo ufficio: devi già conoscere lo slug dell'ufficio
-                    (es. <code>filiale-milano</code>) a cui appartieni.
+                    (es. <code>filiale-torino</code>) a cui appartieni.
                 </p>
                 <form asp-controller="Account" asp-action="LoginTenant" method="post">
                     <div class="mb-3">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="mb-3">
                         <label asp-for="Tenant.TenantSlug" class="form-label"></label>
-                        <input asp-for="Tenant.TenantSlug" class="form-control" placeholder="es. filiale-milano" />
+                        <input asp-for="Tenant.TenantSlug" class="form-control" placeholder="es. filiale-torino" />
                         <span asp-validation-for="Tenant.TenantSlug" class="text-danger"></span>
                     </div>
                     <button type="submit" class="btn btn-primary">Accedi</button>

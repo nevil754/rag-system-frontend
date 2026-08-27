@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace RagSystemFrontend.Core.DTOs;
 
 // --- Livello tenant: POST /auth/login, /auth/refresh ---
@@ -41,5 +43,10 @@ public sealed record PlatformTokenResponse
     public int ExpiresIn { get; init; }
     public string PlatformUserId { get; init; } = "";
     public string Email { get; init; } = "";
+
+    // il backend serializza "is_superadmin" (una sola parola composta, non "is_super_admin"):
+    // senza questo attributo la naming policy SnakeCaseLower globale (RagApiJsonOptions) cerca
+    // "is_super_admin", non trova corrispondenza e lascia questo bool sempre a false.
+    [JsonPropertyName("is_superadmin")]
     public bool IsSuperAdmin { get; init; }
 }
