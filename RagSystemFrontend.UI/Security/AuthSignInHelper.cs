@@ -37,8 +37,12 @@ public static class AuthSignInHelper
         {
             var platformToken = httpContext.User.FindFirst(AuthClaimTypes.PlatformToken);
             var platformUserId = httpContext.User.FindFirst(AuthClaimTypes.PlatformUserId);
+            var isSuperAdmin = httpContext.User.FindFirst(AuthClaimTypes.IsSuperAdmin);
             if (platformToken is not null) claims.Add(new Claim(AuthClaimTypes.PlatformToken, platformToken.Value));
             if (platformUserId is not null) claims.Add(new Claim(AuthClaimTypes.PlatformUserId, platformUserId.Value));
+            // senza questa, User.IsSuperAdmin() torna false appena entri in uno Space: la card
+            // di creazione perde Piano/checkbox credenziali proprio passando da "Cambia Ufficio"
+            if (isSuperAdmin is not null) claims.Add(new Claim(AuthClaimTypes.IsSuperAdmin, isSuperAdmin.Value));
         }
         claims.Add(new Claim(ClaimTypes.NameIdentifier, token.UserId));
         claims.Add(new Claim(ClaimTypes.Email, email));
