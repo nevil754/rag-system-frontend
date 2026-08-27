@@ -14,7 +14,7 @@
 <div class="card mb-4">
     <div class="card-body">
         <h5 class="card-title">Crea un nuovo Space (ufficio)</h5>
-        <form asp-controller="Spaces" asp-action="Create" method="post" class="d-flex flex-column  g-2 align-items-start">
+        <form asp-controller="Spaces" asp-action="Create" method="post" class="d-flex flex-column g-4 align-items-start">
 
             <div class="w-50">
                 <label class="form-label" for="createName">Nome ufficio</label>
@@ -23,7 +23,7 @@
             </div>
             @if (User.IsSuperAdmin())
             {
-                <div class="row g-2 align-items-start">
+                <div class="row g-4 align-items-start">
 
                     <div class="col-auto">
                         <label class="form-label" for="createPlan">Piano</label>
@@ -34,7 +34,7 @@
                         </select>
                     </div>
 
-                    <div class="col-auto align-self-center form-check mt-4">
+                    <div class="col-auto align-self-center justify-content-center form-check mt-4">
                         <input type="checkbox" id="createCustomCredentials" name="CustomCredentials" value="true" class="form-check-input" />
                         <label class="form-check-label" for="createCustomCredentials">Credenziali admin personalizzate</label>
                     </div>
@@ -52,8 +52,8 @@
                 </div>
 
             }
-            <div class="w-full align-self-center">
-                <button type="submit" class="btn btn-primary">Crea</button>
+            <div class="d-flex flex-grow align-self-center justify-content-center ">
+                <button type="submit" class="btn btn-primary flex-grow">Crea</button>
             </div>
 
         </form>
