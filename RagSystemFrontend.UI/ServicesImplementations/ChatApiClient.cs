@@ -17,6 +17,17 @@ public class ChatApiClient(HttpClient httpClient, IHttpContextAccessor httpConte
     public Task<ApiResult<ChatFeedbackResponse>> SendFeedbackAsync(ChatFeedbackRequest request, CancellationToken ct = default) =>
         SendAsync<ChatFeedbackResponse>(CreateTenantRequest(HttpMethod.Post, "chat/feedback", request), ct);
 
+    public Task<ApiResult<ChatHistoryResponse>> GetHistoryAsync(
+        string? conversationId, long? beforeId, int limit, CancellationToken ct = default)
+    {
+        var query = new List<string> { $"limit={limit}" };
+        if (!string.IsNullOrWhiteSpace(conversationId)) query.Add($"conversation_id={Uri.EscapeDataString(conversationId)}");
+        if (beforeId.HasValue) query.Add($"before_id={beforeId.Value}");
+
+        return SendAsync<ChatHistoryResponse>(
+            CreateTenantRequest(HttpMethod.Get, $"chat/history?{string.Join('&', query)}"), ct);
+    }
+
     public Task<HttpResponseMessage> OpenStreamAsync(ChatQueryRequest request, CancellationToken ct = default)
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Post, "chat/stream")

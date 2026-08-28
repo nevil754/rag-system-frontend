@@ -11,6 +11,13 @@ public interface IChatApiClient
     Task<ApiResult<ChatFeedbackResponse>> SendFeedbackAsync(ChatFeedbackRequest request, CancellationToken ct = default);
 
     /// <summary>
+    /// GET /chat/history. Senza conversationId ritorna l'ultima conversazione dell'utente;
+    /// beforeId pagina all'indietro (messaggi piu' vecchi) per lo scroll-up infinito.
+    /// </summary>
+    Task<ApiResult<ChatHistoryResponse>> GetHistoryAsync(
+        string? conversationId, long? beforeId, int limit, CancellationToken ct = default);
+
+    /// <summary>
     /// Apre la connessione SSE grezza verso /chat/stream con HttpCompletionOption.ResponseHeadersRead,
     /// per essere inoltrata byte-per-byte al browser da un controller proxy. Il chiamante è
     /// responsabile di leggere/chiudere lo stream della risposta.

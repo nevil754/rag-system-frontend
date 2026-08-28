@@ -8,7 +8,7 @@
 <div class="card mb-4">
     <div class="card-body">
         <h5 class="card-title">Crea un nuovo utente</h5>
-        <form asp-controller="Users" asp-action="Create" method="post" class="row g-2 align-items-end">
+        <form asp-controller="Users" asp-action="Create" method="post" class="row g-2 align-items-start">
             <div class="col-auto">
                 <label class="form-label" for="createEmail">Email</label>
                 <input type="email" id="createEmail" name="Email" class="form-control" required />
@@ -56,7 +56,7 @@ else
         <tbody>
             @foreach (var user in Model)
             {
-                <tr>
+                <tr class="">
                     <td>@user.Email</td>
                     <td>@user.FullName</td>
                     <td>@user.Role</td>

@@ -99,11 +99,11 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        // la card verde di successo scompare da sola dopo 5s (fade gestito dalla stessa
+        // la card verde di successo scompare da sola dopo 4s (fade gestito dalla stessa
         // classe .fade di Bootstrap usata per la chiusura manuale col bottone)
         const successAlert = document.getElementById('successAlert');
         if (successAlert) {
-            setTimeout(() => bootstrap.Alert.getOrCreateInstance(successAlert).close(), 5000);
+            setTimeout(() => bootstrap.Alert.getOrCreateInstance(successAlert).close(), 4000);
         }
     </script>
     @await RenderSectionAsync("Scripts", required: false)

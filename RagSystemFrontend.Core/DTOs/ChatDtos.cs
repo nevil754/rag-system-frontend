@@ -39,3 +39,20 @@ public sealed record ChatFeedbackResponse
 {
     public string Message { get; init; } = "";
 }
+
+public sealed record MessageDto
+{
+    public long Id { get; init; }
+    public string Role { get; init; } = "";
+    public string Content { get; init; } = "";
+    public List<SourceDto> Sources { get; init; } = [];
+    public DateTimeOffset CreatedAt { get; init; }
+    public double? HallucinationScore { get; init; }
+}
+
+public sealed record ChatHistoryResponse
+{
+    public string? ConversationId { get; init; }
+    public List<MessageDto> Messages { get; init; } = [];
+    public bool HasMore { get; init; }
+}

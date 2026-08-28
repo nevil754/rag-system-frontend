@@ -59,6 +59,24 @@ public class ChatController(
     }
 
 
+    [HttpGet]
+    public async Task<IActionResult> History(string? conversationId, long? beforeId, int limit = 20, CancellationToken ct = default)
+    {
+        var result = await chatApiClient.GetHistoryAsync(conversationId, beforeId, limit, ct);
+        if (!result.Success)
+        {
+            if (result.IsUnauthorized)
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return Unauthorized(new { error = result.ErrorMessage, unauthorized = true });
+            }
+
+            return StatusCode(result.StatusCode == 0 ? 502 : result.StatusCode, new { error = result.ErrorMessage });
+        }
+        return Json(result.Data);
+    }
+
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Feedback([FromBody] ChatFeedbackViewModel model, CancellationToken ct)
