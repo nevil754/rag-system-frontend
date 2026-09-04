@@ -13,7 +13,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}   #con 'Development' renderizzi anche logs di stack tracing
       - ASPNETCORE_HTTP_PORTS=8080     #porta interna del container, okey
-      - BackendApi__BaseUrl=http://${IP_SERVER2}:8001   #http://fastapi:8000    #nome del service del backend che utilizzi
+      - BackendApi__BaseUrl=http://172.23.52.150:8001   #http://fastapi:8000    #nome del service del backend che utilizzi
 
     networks:
       - rag-network
