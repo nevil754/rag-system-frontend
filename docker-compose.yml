@@ -24,3 +24,4 @@ networks:   #cmnq ora che il rag-system è splittato tra server1 e server2, ques
     external: true 
 
 
+#oko 
